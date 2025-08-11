@@ -6,7 +6,8 @@ import cors from "cors";
 
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
-
+import DevisTraction from "./routes/devisTraction.routes.js";
+import AdminDevisTraction from "./routes/admin.devis.routes.js";
 dotenv.config();
 
 const app = express();
@@ -36,7 +37,8 @@ mongoose
 app.get("/", (_, res) => res.send("API OK"));
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
-
+app.use("/api/devis/traction", DevisTraction);
+app.use("/api/admin", AdminDevisTraction);
 // 404
 app.use((req, res) => res.status(404).json({ error: "Route not found" }));
 

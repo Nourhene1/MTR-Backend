@@ -1,28 +1,25 @@
 // models/DevisCompression.js
 import mongoose from "mongoose";
+import { devisBase } from "./_devisBase.js";
 
-const devisCompressionSchema = new mongoose.Schema({
-    user: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: "User", 
-    required: true 
-  },
-  diametre_fil: { type: Number, required: true },
-  diametre_exterieur: { type: Number, required: true },
-  diametre_alesage: { type: Number },
-  diametre_guide: { type: Number },
-  diametre_interieur: { type: Number },
-  longueur_libre: { type: Number, required: true },
-  nombre_spires: { type: Number },
-  pas: { type: Number },
+const spec = new mongoose.Schema({
+  d:  { type: Number, required: true },   // diamètre du fil (d)
+  DE: { type: Number, required: true },   // diamètre extérieur (DE)
+  H:  Number,                              // alésage (H)
+  S:  Number,                              // guide (S)
+  DI: { type: Number, required: true },   // diamètre intérieur (DI)
+  Lo: { type: Number, required: true },   // longueur libre (Lo)
+  nbSpires: { type: Number, required: true },
+  pas: Number,
+
   quantite: { type: Number, required: true },
-  matiere: { type: String, enum: ["Fil ressort noir", "Galvanisé", "Inox"], required: true },
-  sens_enroulement: { type: String, enum: ["Gauche", "Droite"] },
-  type_extremite: { type: String },
-  documents: [{ type: String }], // chemins fichiers
-  exigences: { type: String },
-  remarques: { type: String },
-  date_demande: { type: Date, default: Date.now }
-});
+  matiere: { type: String, enum: ["Fil ressort noir (SM, SH)","Fil ressort galvanisé","Fil ressort inox"], required: true },
+  enroulement: { type: String, enum: ["Enroulement gauche","Enroulement droite"] },
+  extremite: { type: String, enum: ["ERM","EL","ELM","ERNM"] },
+}, { _id:false });
 
-export default mongoose.model("DevisCompression", devisCompressionSchema);
+const schema = new mongoose.Schema({});
+schema.add(devisBase);
+schema.add({ spec });
+
+export default mongoose.model("DevisCompression", schema);
